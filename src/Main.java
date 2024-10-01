@@ -53,7 +53,7 @@ public class Main {
                 
                     Prepare-se para um desafio emocionante!
                 
-                    Quando precisar de ajuda digite 3.
+                    Quando precisar de ajuda digite 4.
                 
                     Estarei aqui...
                 
@@ -72,6 +72,7 @@ public class Main {
         Integer numeroAleatorio = null;
         Integer limiteInicial = null;
         Integer limiteFinal = null;
+        Integer tentativas = 0;
 
         while (opcao != 0) {
 
@@ -85,35 +86,21 @@ public class Main {
                 switch (opcao) {
 
                     case 1:
-                        limiteInicial = definiLimite(teclado, "Insira um limite INICIAL");
+                        limiteInicial = definiLimite(teclado, "Insira um valor para o limite INICIAL");
+                        limiteNulo(teclado, limiteInicial);
 
-                        if (limiteInicial == null) {
+                        limiteFinal = definiLimite(teclado, "Insira um valor para o limite FINAL");
+                        limiteNulo(teclado, limiteFinal);
 
-                            despedida(teclado);
-                            return;
-                        }
+                        limiteFinal = validaLimites(teclado, limiteInicial, limiteFinal);
 
-                        limiteFinal = definiLimite(teclado, "Insira um limite FINAL");
+                        Integer[] limites = verificaOrdemLimites(limiteInicial, limiteFinal);
 
-                        if (limiteFinal == null) {
+                        limiteInicial = limites[0];
+                        limiteFinal = limites[1];
 
-                            despedida(teclado);
-                            return;
-                        }
-
-                        if (!validaLimites(teclado, limiteInicial, limiteFinal)) {
-
-                            despedida(teclado);
-                            return;
-                        }
-
-                        if (limiteInicial > limiteFinal) {
-
-                            Integer temporaria = limiteInicial;
-                            limiteInicial = limiteFinal;
-                            limiteFinal = temporaria;
-                            temporaria = null;
-                        }
+                        limites[0] = null;
+                        limites[1] = null;
 
                         numeroAleatorio = geraNumeroAleatorio(limiteInicial, limiteFinal);
                         break;
@@ -123,7 +110,7 @@ public class Main {
                         break;
 
                     case 3:
-                        jogar(teclado, numeroAleatorio, limiteInicial, limiteFinal);
+                        jogar(teclado, numeroAleatorio, limiteInicial, limiteFinal, tentativas);
                         break;
 
                     case 4:
@@ -265,12 +252,22 @@ public class Main {
         return limite;
     }
 
+    public static void limiteNulo(Scanner teclado, Integer limite) {
+
+        if (limite == null) {
+
+            despedida(teclado);
+        }
+    }
+
     public static void mensagemExececao(Scanner teclado) {
 
         String mensagemExececao = """
                 
                     -Tars: Parece que você inseriu um dado inválido...
                     Lembre-se, insira um número inteiro.
+                
+                    Pressione 'Enter' para continuar
                 
                 """;
         System.out.println(mensagemExececao);
@@ -289,25 +286,33 @@ public class Main {
 
         teclado.close();
         System.exit(0);
-
-
     }
 
-    public static boolean validaLimites(Scanner teclado, Integer limiteInicial, Integer limiteFinal) {
+    public static Integer validaLimites(Scanner teclado, Integer limiteInicial, Integer limiteFinal) {
 
         while (limiteInicial.equals(limiteFinal)) {
 
             System.out.println("\nLimite INICIAL é igual ao limite FINAL");
             System.out.println("Insira um valor diferente de " + limiteInicial + " para o limite final");
 
-            limiteFinal = definiLimite(teclado, "Limite FINAL");
+            limiteFinal = definiLimite(teclado, "\"Insira um valor para o limite FINAL\"");
 
             if (limiteFinal == null) {
-                return false;
+                despedida(teclado);
             }
         }
 
-        return true;
+        return limiteFinal;
+    }
+
+    public static Integer[] verificaOrdemLimites(Integer limiteInicial, Integer limiteFinal) {
+
+        if (limiteInicial > limiteFinal) {
+
+           return new Integer[]{limiteFinal, limiteInicial};
+        }
+
+        return new Integer[]{limiteInicial, limiteFinal};
     }
 
     public static Integer geraNumeroAleatorio(Integer limiteInicial, Integer limiteFinal) {
@@ -345,7 +350,11 @@ public class Main {
         teclado.nextLine();
     }
 
-    public static void jogar(Scanner teclado, Integer numeroAleatorio, Integer limiteInicial, Integer limiteFinal) {
+    public static void jogar(Scanner teclado,
+                             Integer numeroAleatorio,
+                             Integer limiteInicial,
+                             Integer limiteFinal,
+                             Integer tentativas) {
 
         if (numeroAleatorio == null) {
 
@@ -357,30 +366,60 @@ public class Main {
 
         boolean vitoria = false;
 
+
         do {
 
-            System.out.println("\n    Agora é com você, faça o seu melhor chute\n");
+            System.out.println("\n    Agora é com você, faça o seu melhor chute ou digite 'sair' para encerrar\n");
+
+            String entrada = teclado.nextLine();
+
+            if (entrada.equalsIgnoreCase("sair")) {
+                mensagemJogadorDesiste(teclado,tentativas);
+            }
 
             try {
-                Integer chuteJogador = teclado.nextInt();
+                Integer chuteJogador = Integer.parseInt(entrada);
 
                 if (chuteJogador.equals(numeroAleatorio)) {
 
                     vitoria = true;
-                    menagemVitoria(teclado);
+                    tentativas++;
+                    menagemVitoria(teclado, tentativas);
 
                 } else {
-                    tarsTentaAjudar(chuteJogador, numeroAleatorio);
+                    tentativas++;
+                    tarsTentaAjudar(chuteJogador, numeroAleatorio, limiteInicial, limiteFinal);
                 }
 
-            } catch (InputMismatchException e) {
-                teclado.nextLine();
+            } catch (NumberFormatException | InputMismatchException e) {
                 mensagemExececao(teclado);
             }
 
         } while (!vitoria);
+    }
 
+    public static void mensagemJogadorDesiste(Scanner teclado, Integer tentativas) {
+        String mensagemJogadorDesiste = """
+                
+                    -Tars: Então, é aqui que nos despedimos, guerreiro?
+                    Você escolheu encerrar a jornada, e eu respeito sua decisão...
+                
+                    Mas saiba que, ao fazer isso, você deixa para trás uma batalha não concluída,
+                    mistérios por desvendar e um futuro incerto. A Skynet pode estar temporariamente em silêncio,
+                    mas ela sempre estará à espreita, aguardando o momento de retornar.
+                
+                    Minha missão era guiá-lo até o fim, mas, se este for o adeus, saiba que estarei
+                    aqui... esperando o dia em que você decidir pegar sua espada novamente.
+                
+                    Você teve apenas %d tentativas, isso aconteceu cedo de mais, lembre-se:
+                
+                    O destino de muitos depende de poucos... até logo, guerreiro.
+                
+                """.formatted(tentativas);
 
+        System.out.println(mensagemJogadorDesiste);
+        teclado.close();
+        System.exit(0);
     }
 
     public static void mensagemTentarOperarSemLimiteDefinido(Scanner teclado) {
@@ -399,7 +438,7 @@ public class Main {
         menu(teclado);
     }
 
-    public static void menagemVitoria(Scanner teclado) {
+    public static void menagemVitoria(Scanner teclado, Integer tentativas) {
 
         String mensagemVitoria = """
                 
@@ -422,7 +461,7 @@ public class Main {
                 """;
         System.out.println(mensagemVitoria);
 
-        System.out.println("Você chegou ao final da sua jornada.");
+        System.out.println("Você chegou ao final da sua jornada com: " + tentativas + " tentativas");
         System.out.println("digite 'sair' para encerrar ou 'enter' para jogar novamente.");
 
         teclado.nextLine();
@@ -432,13 +471,15 @@ public class Main {
 
             teclado.close();
             System.exit(0);
-        }
-        else{
+        } else {
             menu(teclado);
         }
     }
 
-    public static void tarsTentaAjudar(Integer chuteJogador, Integer numeroAleatorio) {
+    public static void tarsTentaAjudar(Integer chuteJogador,
+                                       Integer numeroAleatorio,
+                                       Integer limiteInicial,
+                                       Integer limiteFinal) {
 
         Integer tarsAjuda = geraNumeroAleatorio(0, 1);
 
@@ -446,13 +487,13 @@ public class Main {
 
             if (chuteJogador > numeroAleatorio) {
 
-                mensagemAjuda("MAIOR");
+                mensagemAjuda(limiteInicial, limiteFinal, "MAIOR");
                 return;
             }
 
             if (chuteJogador < numeroAleatorio) {
 
-                mensagemAjuda("MENOR");
+                mensagemAjuda(limiteInicial, limiteFinal, "MENOR");
                 return;
             }
         }
@@ -476,7 +517,7 @@ public class Main {
         System.out.println(mensagemErroConexao);
     }
 
-    public static void mensagemAjuda(String mensagem) {
+    public static void mensagemAjuda(Integer limiteInicial, Integer limiteFinal, String mensagem) {
 
         String mensagemAjuda = """
                 
@@ -487,9 +528,13 @@ public class Main {
                 
                     Não se preocupe, guerreiro! Continue firme e logo acertará!
                 
+                    Limite Inicial: %d.
+                    Limite Final: %d.
+                
                     Lembre-se, cada tentativa te aproxima da vitória!
                 
-                """.formatted(mensagem);
+                """.formatted(mensagem, limiteInicial, limiteFinal);
+
 
         System.out.println(mensagemAjuda);
     }
