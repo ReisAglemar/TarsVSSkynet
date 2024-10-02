@@ -1,3 +1,21 @@
+/**
+ * Os objetivos definidos para realizar essa atividade foram:
+ *
+ *  - tentar ao máximo entregar uma experiência ao usuário;
+ *  - tentar ao máximo o uso de funções, promovendo o maior reuso possível
+ *  e os menores colapsos possíveis em caso de refatoração;
+ *
+ *  Portanto, essa atividade ficou um pouco mais extensa, no entanto, é notória a história
+ *  por tras do jogo, os personagens, suas tentativas de ajuda, e claro aquele ester egg final
+ *  que não pode faltar.
+ *
+ *  Qunato as solicitações técnicas/funcionais todas foram atendidas.
+ *
+ *  Aglemar Reis
+ *  RA: 22318477-5
+ */
+
+
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -13,6 +31,8 @@ public class Main {
 
         teclado.close();
     }
+
+
 
     public static void boasVindas() {
 
@@ -41,6 +61,8 @@ public class Main {
         System.out.println(boasVindas);
     }
 
+
+
     public static void apresentacaoTars(Scanner teclado) {
 
         String apresentacaoTars = """
@@ -53,7 +75,8 @@ public class Main {
                 
                     Prepare-se para um desafio emocionante!
                 
-                    Quando precisar de ajuda digite 4.
+                    Quando precisar de ajuda digite 4
+                    e aprenda tudo o que eu sei.
                 
                     Estarei aqui...
                 
@@ -65,6 +88,8 @@ public class Main {
         System.out.println("Pressione 'Enter' para iniciar");
         teclado.nextLine();
     }
+
+
 
     public static void menu(Scanner teclado) {
 
@@ -124,7 +149,7 @@ public class Main {
                     case 1137:
                         mensagemSecreta(teclado);
                         break;
-
+    
                     default:
                         mensagemExececao(teclado);
                         break;
@@ -135,6 +160,8 @@ public class Main {
             }
         }
     }
+
+
 
     public static void tarsApresentaMenu() {
 
@@ -163,6 +190,8 @@ public class Main {
 
         System.out.println(menu);
     }
+
+
 
     public static void ajuda(Scanner teclado) {
 
@@ -229,6 +258,8 @@ public class Main {
         teclado.nextLine();
     }
 
+
+
     public static Integer definiLimite(Scanner teclado, String mensagem) {
 
         Integer limite = null;
@@ -252,6 +283,8 @@ public class Main {
         return limite;
     }
 
+
+
     public static void limiteNulo(Scanner teclado, Integer limite) {
 
         if (limite == null) {
@@ -259,6 +292,8 @@ public class Main {
             despedida(teclado);
         }
     }
+
+
 
     public static void mensagemExececao(Scanner teclado) {
 
@@ -274,6 +309,8 @@ public class Main {
         teclado.nextLine();
     }
 
+
+
     public static void despedida(Scanner teclado) {
 
         String despedida = """
@@ -287,6 +324,8 @@ public class Main {
         teclado.close();
         System.exit(0);
     }
+
+
 
     public static Integer validaLimites(Scanner teclado, Integer limiteInicial, Integer limiteFinal) {
 
@@ -305,15 +344,19 @@ public class Main {
         return limiteFinal;
     }
 
+
+
     public static Integer[] verificaOrdemLimites(Integer limiteInicial, Integer limiteFinal) {
 
         if (limiteInicial > limiteFinal) {
 
-           return new Integer[]{limiteFinal, limiteInicial};
+            return new Integer[]{limiteFinal, limiteInicial};
         }
 
         return new Integer[]{limiteInicial, limiteFinal};
     }
+
+
 
     public static Integer geraNumeroAleatorio(Integer limiteInicial, Integer limiteFinal) {
 
@@ -321,6 +364,8 @@ public class Main {
 
         return gerador.nextInt((limiteFinal - limiteInicial) + 1) + limiteInicial;
     }
+
+
 
     public static void mostraLimites(Scanner teclado, Integer limiteInicial, Integer limiteFinal) {
 
@@ -350,6 +395,8 @@ public class Main {
         teclado.nextLine();
     }
 
+
+
     public static void jogar(Scanner teclado,
                              Integer numeroAleatorio,
                              Integer limiteInicial,
@@ -374,7 +421,7 @@ public class Main {
             String entrada = teclado.nextLine();
 
             if (entrada.equalsIgnoreCase("sair")) {
-                mensagemJogadorDesiste(teclado,tentativas);
+                mensagemJogadorDesiste(teclado, tentativas);
             }
 
             try {
@@ -397,6 +444,8 @@ public class Main {
 
         } while (!vitoria);
     }
+
+
 
     public static void mensagemJogadorDesiste(Scanner teclado, Integer tentativas) {
         String mensagemJogadorDesiste = """
@@ -422,6 +471,8 @@ public class Main {
         System.exit(0);
     }
 
+
+
     public static void mensagemTentarOperarSemLimiteDefinido(Scanner teclado) {
 
         String mensagemTentarOperarSemLimiteDefinido = """
@@ -437,6 +488,8 @@ public class Main {
         teclado.nextLine();
         menu(teclado);
     }
+
+
 
     public static void menagemVitoria(Scanner teclado, Integer tentativas) {
 
@@ -464,17 +517,17 @@ public class Main {
         System.out.println("Você chegou ao final da sua jornada com: " + tentativas + " tentativas");
         System.out.println("digite 'sair' para encerrar ou 'enter' para jogar novamente.");
 
-        teclado.nextLine();
         String escolha = teclado.nextLine();
 
         if (escolha.equals("sair")) {
+            despedida(teclado);
 
-            teclado.close();
-            System.exit(0);
         } else {
             menu(teclado);
         }
     }
+
+
 
     public static void tarsTentaAjudar(Integer chuteJogador,
                                        Integer numeroAleatorio,
@@ -501,6 +554,8 @@ public class Main {
         menagemErroConexao();
     }
 
+
+
     public static void menagemErroConexao() {
 
         String mensagemErroConexao = """
@@ -516,6 +571,8 @@ public class Main {
 
         System.out.println(mensagemErroConexao);
     }
+
+
 
     public static void mensagemAjuda(Integer limiteInicial, Integer limiteFinal, String mensagem) {
 
@@ -538,6 +595,8 @@ public class Main {
 
         System.out.println(mensagemAjuda);
     }
+
+
 
     public static void mensagemSecreta(Scanner teclado) {
 
