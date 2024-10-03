@@ -1,18 +1,18 @@
 /**
  * Os objetivos definidos para realizar essa atividade foram:
- *
- *  - tentar ao máximo entregar uma experiência ao usuário;
- *  - tentar ao máximo o uso de funções, promovendo o maior reuso possível
- *  e os menores colapsos possíveis em caso de refatoração;
- *
- *  Portanto, essa atividade ficou um pouco mais extensa, no entanto, é notória a história
- *  por tras do jogo, os personagens, suas tentativas de ajuda, e claro aquele ester egg final
- *  que não pode faltar.
- *
- *  Qunato as solicitações técnicas/funcionais todas foram atendidas.
- *
- *  Aglemar Reis
- *  RA: 22318477-5
+ * <p>
+ * - tentar ao máximo entregar uma experiência ao usuário;
+ * - tentar ao máximo o uso de funções, promovendo o maior reuso possível
+ * e os menores colapsos possíveis em caso de refatoração;
+ * <p>
+ * Portanto, essa atividade ficou um pouco mais extensa, no entanto, é notória a história
+ * por tras do jogo, os personagens, suas tentativas de ajuda, e claro aquele ester egg final
+ * que não pode faltar.
+ * <p>
+ * Qunato as solicitações técnicas/funcionais todas foram atendidas.
+ * <p>
+ * Aglemar Reis
+ * RA: 22318477-5
  */
 
 
@@ -28,10 +28,8 @@ public class Main {
         boasVindas();
         apresentacaoTars(teclado);
         menu(teclado);
-
         teclado.close();
     }
-
 
 
     public static void boasVindas() {
@@ -62,7 +60,6 @@ public class Main {
     }
 
 
-
     public static void apresentacaoTars(Scanner teclado) {
 
         String apresentacaoTars = """
@@ -85,13 +82,13 @@ public class Main {
                 """;
 
         System.out.println(apresentacaoTars);
-        System.out.println("Pressione 'Enter' para iniciar");
-        teclado.nextLine();
+        aguardaJogador(teclado);
     }
 
 
-
     public static void menu(Scanner teclado) {
+
+        limpaTela();
 
         int opcao = 1010;
         Integer numeroAleatorio = null;
@@ -101,6 +98,7 @@ public class Main {
 
         while (opcao != 0) {
 
+            limpaTela();
             tarsApresentaMenu();
 
             try {
@@ -149,7 +147,7 @@ public class Main {
                     case 1137:
                         mensagemSecreta(teclado);
                         break;
-    
+
                     default:
                         mensagemExececao(teclado);
                         break;
@@ -160,7 +158,6 @@ public class Main {
             }
         }
     }
-
 
 
     public static void tarsApresentaMenu() {
@@ -192,8 +189,9 @@ public class Main {
     }
 
 
-
     public static void ajuda(Scanner teclado) {
+
+        limpaTela();
 
         String ajuda = """
                 
@@ -253,14 +251,13 @@ public class Main {
                 """;
 
         System.out.println(ajuda);
-
-        System.out.println("Pressione 'Enter' para volta ao menu inicial");
-        teclado.nextLine();
+        aguardaJogador(teclado);
     }
 
 
-
     public static Integer definiLimite(Scanner teclado, String mensagem) {
+
+        limpaTela();
 
         Integer limite = null;
 
@@ -284,7 +281,6 @@ public class Main {
     }
 
 
-
     public static void limiteNulo(Scanner teclado, Integer limite) {
 
         if (limite == null) {
@@ -294,8 +290,9 @@ public class Main {
     }
 
 
-
     public static void mensagemExececao(Scanner teclado) {
+
+        limpaTela();
 
         String mensagemExececao = """
                 
@@ -310,8 +307,9 @@ public class Main {
     }
 
 
-
     public static void despedida(Scanner teclado) {
+
+        limpaTela();
 
         String despedida = """
                 
@@ -326,10 +324,11 @@ public class Main {
     }
 
 
-
     public static Integer validaLimites(Scanner teclado, Integer limiteInicial, Integer limiteFinal) {
 
         while (limiteInicial.equals(limiteFinal)) {
+
+            limpaTela();
 
             System.out.println("\nLimite INICIAL é igual ao limite FINAL");
             System.out.println("Insira um valor diferente de " + limiteInicial + " para o limite final");
@@ -345,7 +344,6 @@ public class Main {
     }
 
 
-
     public static Integer[] verificaOrdemLimites(Integer limiteInicial, Integer limiteFinal) {
 
         if (limiteInicial > limiteFinal) {
@@ -357,7 +355,6 @@ public class Main {
     }
 
 
-
     public static Integer geraNumeroAleatorio(Integer limiteInicial, Integer limiteFinal) {
 
         Random gerador = new Random();
@@ -366,8 +363,9 @@ public class Main {
     }
 
 
-
     public static void mostraLimites(Scanner teclado, Integer limiteInicial, Integer limiteFinal) {
+
+        limpaTela();
 
         String mostraLimites = limiteInicial == null && limiteFinal == null ?
 
@@ -390,11 +388,8 @@ public class Main {
                         """;
 
         System.out.println(mostraLimites);
-
-        System.out.println("Pressione 'Enter' para volta ao menu inicial");
-        teclado.nextLine();
+        aguardaJogador(teclado);
     }
-
 
 
     public static void jogar(Scanner teclado,
@@ -406,15 +401,15 @@ public class Main {
         if (numeroAleatorio == null) {
 
             mensagemTentarOperarSemLimiteDefinido(teclado);
+            return;
         }
-
-        System.out.println("    -Tars: Estamos prontos! Você deve chutar um número dentro do intervalo.");
-        System.out.println("    Intervalo: " + limiteInicial + " a " + limiteFinal + ".");
 
         boolean vitoria = false;
 
 
         do {
+
+            limpaTela();
 
             System.out.println("\n    Agora é com você, faça o seu melhor chute ou digite 'sair' para encerrar\n");
 
@@ -435,7 +430,7 @@ public class Main {
 
                 } else {
                     tentativas++;
-                    tarsTentaAjudar(chuteJogador, numeroAleatorio, limiteInicial, limiteFinal);
+                    tarsTentaAjudar(chuteJogador, numeroAleatorio, limiteInicial, limiteFinal, teclado);
                 }
 
             } catch (NumberFormatException | InputMismatchException e) {
@@ -446,8 +441,10 @@ public class Main {
     }
 
 
-
     public static void mensagemJogadorDesiste(Scanner teclado, Integer tentativas) {
+
+        limpaTela();
+
         String mensagemJogadorDesiste = """
                 
                     -Tars: Então, é aqui que nos despedimos, guerreiro?
@@ -472,23 +469,22 @@ public class Main {
     }
 
 
-
     public static void mensagemTentarOperarSemLimiteDefinido(Scanner teclado) {
+
+        limpaTela();
 
         String mensagemTentarOperarSemLimiteDefinido = """
                 
                     -Tars: Parece que você está tentando operar o sistema sem configurar
                     Acesse: '1 - Configurar o Sistema' no menu principal para configurar.
                 
-                    Pressione 'Enter' para volta ao menu inicial.
+                
                 """;
 
         System.out.println(mensagemTentarOperarSemLimiteDefinido);
+        aguardaJogador(teclado);
 
-        teclado.nextLine();
-        menu(teclado);
     }
-
 
 
     public static void menagemVitoria(Scanner teclado, Integer tentativas) {
@@ -528,11 +524,11 @@ public class Main {
     }
 
 
-
     public static void tarsTentaAjudar(Integer chuteJogador,
                                        Integer numeroAleatorio,
                                        Integer limiteInicial,
-                                       Integer limiteFinal) {
+                                       Integer limiteFinal,
+                                       Scanner teclado) {
 
         Integer tarsAjuda = geraNumeroAleatorio(0, 1);
 
@@ -540,23 +536,24 @@ public class Main {
 
             if (chuteJogador > numeroAleatorio) {
 
-                mensagemAjuda(limiteInicial, limiteFinal, "MAIOR");
+                mensagemAjuda(chuteJogador, limiteInicial, limiteFinal, "MAIOR", teclado);
                 return;
             }
 
             if (chuteJogador < numeroAleatorio) {
 
-                mensagemAjuda(limiteInicial, limiteFinal, "MENOR");
+                mensagemAjuda(chuteJogador, limiteInicial, limiteFinal, "MENOR", teclado);
                 return;
             }
         }
 
-        menagemErroConexao();
+        menagemErroConexao(teclado);
     }
 
 
+    public static void menagemErroConexao(Scanner teclado) {
 
-    public static void menagemErroConexao() {
+        limpaTela();
 
         String mensagemErroConexao = """
                 
@@ -570,11 +567,17 @@ public class Main {
                 """;
 
         System.out.println(mensagemErroConexao);
+        aguardaJogador(teclado);
     }
 
 
+    public static void mensagemAjuda(Integer chuteJogador,
+                                     Integer limiteInicial,
+                                     Integer limiteFinal,
+                                     String mensagem,
+                                     Scanner teclado) {
 
-    public static void mensagemAjuda(Integer limiteInicial, Integer limiteFinal, String mensagem) {
+        limpaTela();
 
         String mensagemAjuda = """
                 
@@ -585,20 +588,23 @@ public class Main {
                 
                     Não se preocupe, guerreiro! Continue firme e logo acertará!
                 
+                    Seu chute: %d.
                     Limite Inicial: %d.
                     Limite Final: %d.
                 
                     Lembre-se, cada tentativa te aproxima da vitória!
                 
-                """.formatted(mensagem, limiteInicial, limiteFinal);
+                """.formatted(mensagem, chuteJogador, limiteInicial, limiteFinal);
 
 
         System.out.println(mensagemAjuda);
+        aguardaJogador(teclado);
     }
 
 
-
     public static void mensagemSecreta(Scanner teclado) {
+
+        limpaTela();
 
         String mensagemSecreta = """
                 
@@ -642,8 +648,20 @@ public class Main {
                 
                 """;
         System.out.println(mensagemSecreta);
+        aguardaJogador(teclado);
+    }
 
-        System.out.println("Pressione 'Enter' para volta ao menu inicial");
+
+    public static void limpaTela() {
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+
+    public static void aguardaJogador(Scanner teclado) {
+
+        System.out.println("Pressione 'Enter' para volta à tela anterior");
         teclado.nextLine();
     }
 }
