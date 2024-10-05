@@ -20,8 +20,9 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         Scanner teclado = new Scanner(System.in);
 
@@ -86,7 +87,7 @@ public class Main {
     }
 
 
-    public static void menu(Scanner teclado) {
+    public static void menu(Scanner teclado) throws InterruptedException {
 
         limpaTela();
 
@@ -396,7 +397,7 @@ public class Main {
                              Integer numeroAleatorio,
                              Integer limiteInicial,
                              Integer limiteFinal,
-                             Integer tentativas) {
+                             Integer tentativas) throws InterruptedException {
 
         if (numeroAleatorio == null) {
 
@@ -487,7 +488,7 @@ public class Main {
     }
 
 
-    public static void menagemVitoria(Scanner teclado, Integer tentativas) {
+    public static void menagemVitoria(Scanner teclado, Integer tentativas) throws InterruptedException {
 
         String mensagemVitoria = """
                 
@@ -602,7 +603,7 @@ public class Main {
     }
 
 
-    public static void mensagemSecreta(Scanner teclado) {
+    public static void mensagemSecreta(Scanner teclado) throws InterruptedException {
 
         limpaTela();
 
@@ -647,7 +648,7 @@ public class Main {
                 
                 
                 """;
-        System.out.println(mensagemSecreta);
+        imprimeMensagemPausadamente(mensagemSecreta);
         aguardaJogador(teclado);
     }
 
@@ -663,5 +664,15 @@ public class Main {
 
         System.out.println("Pressione 'Enter' para volta à tela anterior");
         teclado.nextLine();
+    }
+
+
+    public static void imprimeMensagemPausadamente(String mensagem) throws InterruptedException {
+
+        for (int i = 0; i < mensagem.length(); i++) {
+
+            System.out.print(mensagem.charAt(i));
+            Thread.sleep(35);
+        }
     }
 }
